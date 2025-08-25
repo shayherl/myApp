@@ -1,19 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import TaskFilter from './components/TaskFilter.jsx';
+import TaskList from "./components/TaskList.jsx";
+import { useEffect } from "react";
+import { fetchTasks } from "./services/api.js";
 
 function App() {
-  const [health, setHealth] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =>{
+      (async () => {
+        try {
+          const data = await fetchTasks();
+          setTasks(data || []);
+          setFilteredTasks(data);
+        } finally {
+          setLoading(false);
+        }
+      })();
+  },[]);
 
   useEffect(() => {
-    fetch("/api/health")
-      .then(r => r.json())
-      .then(setHealth)
-      .catch(console.error);
-  }, []);
+      if (filter === 'completed'){
+        setFilteredTasks(tasks.filter(t => t.completed));
+      }
+      else if (filter === 'pending'){
+        setFilteredTasks(tasks.filter(t => !t.completed));
+      }
+      else{
+        setFilteredTasks(tasks);
+      }
+    }, [tasks,filter]);
+
+  if (loading) return <div>Loading…</div>;
 
   return (
-    <div style={{ fontFamily: "system-ui", padding: 24 }}>
-      <h1>React + Node Starter</h1>
-      <pre>{JSON.stringify(health, null, 2)}</pre>
+    <div>
+      <h1>Tasks:</h1>
+      <TaskFilter value={filter} onChange={setFilter}/>
+      {tasks.length === 0 ? 'No tasks to show' : <TaskList tasks={filteredTasks} onChange={setTasks}/>}
     </div>
   );
 }
