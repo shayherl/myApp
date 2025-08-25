@@ -1,10 +1,28 @@
-# React + Node Starter
+# Task Manager App
 
-## Dev
-- Server: `npm run dev-server` (port 5000)
-- Client: `npm run dev-client` (port 3000, proxy -> 5000)
-- Both:   `npm run dev`
+## Backend Setup
+1. Navigate to the backend folder:
+   cd backend
+2. Install dependencies:
+   npm install
+3. Start the backend server:
+   npm run start
+The backend runs on http://localhost:4000
+ 
+ ---
 
-## Build
-- Client: `npm run build` (in /client)
-- Server start (prod): `npm start` (after configuring process manager or hosting)
+## Frontend Setup
+1. Navigate to the frontend folder:
+   cd frontend
+2. Install dependencies:
+   npm install
+3. Start the backend server:
+   npm run dev
+The backend runs on http://localhost:3000
+
+---
+
+## Root Setup (Run Full App)
+To start both frontend and backend simultaneously from the root folder:
+  npm install
+  npm run dev
